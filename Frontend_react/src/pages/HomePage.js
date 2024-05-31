@@ -1,23 +1,33 @@
-import React, { Component } from 'react';
-// import MapContainer from '../components/modules/MapContainer'; 
+import React from 'react';
+import Registration from './auth/Registration';
+import MapContainer from '../components/modules/MapContainer';
 
-export default class HomePage extends Component {
+function HomePage(props) {
+  // Define markers here or props
+  const markers = []; // Define markers array here
 
-  render() {
-    return (
-      <div>
-        <h1> Welcome !</h1>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>Welcome!</h1>
+      <Registration />
+      <MapContainer markers={markers} />
+    </div>
+  );
 }
-// const HomePage = () => {
-//   return (
-//     <div>
-//       <h1>Welcome to NeighborHelp!</h1>
-//       <MapContainer />
-//     </div>
-//   );
-// }
 
-// export default HomePage;
+export default HomePage;
+
+
+
+/*
+const HomePage = () => {
+  return (
+    <div>
+      <h1>Welcome to NeighborHelp!</h1>
+      <MapContainer />
+    </div>
+  );
+}
+
+export default HomePage;
+*/

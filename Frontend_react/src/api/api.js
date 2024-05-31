@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import API_KEY from './config';
 
@@ -11,12 +10,17 @@ const api = axios.create({
   }
 });
 
+export const fetchData = () => {
+  return fetch('http://localhost:3000/registrations', {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(response => response.json());
+};
 
-// Utiliser les chemins relatifs pour les endpoints spécifiques
 export const signIn = async (userData) => {
   try {
-    // Utiliser le chemin complet tel que configuré par Devise et votre routing dans Rails
-    const response = await api.post('/users/sign_in', userData);  // Assurez-vous que cette route est correcte
+    const response = await api.post('/users/sign_in', userData);
     return response.data;
   } catch (error) {
     throw error;
@@ -25,8 +29,7 @@ export const signIn = async (userData) => {
 
 export const signUp = async (userData) => {
   try {
-    // Assurez-vous que '/users' est correct et disponible via POST pour l'enregistrement
-    const response = await api.post('/users', { user: userData }); // Encapsuler userData dans { user: ... } si nécessaire par votre API Rails
+    const response = await api.post('/users', { user: userData });
     return response.data;
   } catch (error) {
     throw error;
@@ -36,6 +39,5 @@ export const signUp = async (userData) => {
 export const postHelpRequest = (helpRequestData) => {
   return api.post('/help_requests', helpRequestData);
 };
-
 
 export default api;

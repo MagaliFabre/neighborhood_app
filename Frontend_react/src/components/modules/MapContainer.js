@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
+
 const mapContainerStyle = {
   width: '100%',
   height: '400px',
@@ -11,7 +12,7 @@ const center = {
   lng: 2.3522,
 };
 
-function Map({ markers }) { 
+function MapContainer({ markers }) { 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyA8u9fgXmtkcJKH4VUNmzkDheIt0MhbemM', 
@@ -43,4 +44,6 @@ function Map({ markers }) {
   );
 }
 
-export default Map;
+export default MapContainer;
+
+

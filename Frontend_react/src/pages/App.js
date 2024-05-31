@@ -1,17 +1,24 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import HomePage from './HomePage';
 import Dashboard from './Dashboard';
+import Navbar from '../components/layout/Navbar';
+import MobileFooter from '../components/layout/MobileFooter';
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
     <div className='app'>
-      <BrowserRouter>
+      
+      <Navbar />
         <Routes>
-          <Route exact path={"/"} element={<HomePage />} />
-          <Route exact path={"/dashboard"} element={<Dashboard />} />
+          <Route exact path={"/"} element={ <HomePage/>} />
+          <Route exact path={"/dashboard"} element={<Dashboard/>} />
         </Routes>
-      </BrowserRouter>
+        <MobileFooter />
+      
     </div>
   );
 }

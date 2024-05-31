@@ -17,8 +17,12 @@ module NeighborhoodApp
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :delete, :put, :options]
+        origins 'http://localhost:3001'  # Ajoutez l'origine de votre frontend
+
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          credentials: true  # Permet l'envoi de cookies et autres credentials
       end
     end
 
