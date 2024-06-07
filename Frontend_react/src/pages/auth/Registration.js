@@ -3,7 +3,7 @@ import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-function Registration({ handleSuccessfulAuth }) {
+export const Registration = ({ handleSuccessfulAuth }) => {
   const [userData, setUserData] = useState({
     email: '',
     password: '',
@@ -82,9 +82,7 @@ function Registration({ handleSuccessfulAuth }) {
       </Box>
     </Container>
   );
-}
-
-export default Registration;
+};
 
 
 // import React, { useState } from 'react';

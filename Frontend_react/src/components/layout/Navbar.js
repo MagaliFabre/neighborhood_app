@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 
 
-const pages = ['accueil', 'homepage', 'signup', 'signin']; 
+const pages = ['accueil', 'Homepage', 'Dashboard']; 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {

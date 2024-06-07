@@ -3,7 +3,7 @@ require_relative "boot"
 require "rails/all"
 require 'rack'
 require 'rack/cors'
-# Dans votre fichier config/application.rb
+require 'sidekiq/web'
 
 module NeighborhoodApp
   class Application < Rails::Application
