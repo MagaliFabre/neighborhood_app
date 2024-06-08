@@ -2,8 +2,7 @@ require 'geocoder'
 
 class HelpRequestsController < ApplicationController
   before_action :authenticate_user!
-
-  before_action :set_help_request, only: [:show, :update, :destroy]
+  before_action :set_help_request, only: [:show, :update, :destroy, :create]
 
   # POST /help_requests
   def index
@@ -61,7 +60,7 @@ class HelpRequestsController < ApplicationController
 
   def authenticate_user!
     unless logged_in?
-      redirect_to new_session_path, alert: 'You must sign in to access this page'
+      render json: { error: 'You must sign in to access this page' }, status: :unauthorized
     end
   end
 

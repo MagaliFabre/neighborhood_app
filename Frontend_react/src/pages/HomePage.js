@@ -19,6 +19,7 @@ export const HomePage = (props) => {
     axios
       .delete("http://localhost:3000/logout", { withCredentials: true })
       .then((response) => {
+        console.log(response.status);
         handleLogout();
       })
       .catch((error) => {

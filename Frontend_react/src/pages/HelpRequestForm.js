@@ -1,6 +1,7 @@
-// src/components/HelpRequestForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Utilisez useNavigate pour la redirection
+
 
 const HelpRequestForm = () => {
   const [title, setTitle] = useState('');
@@ -8,9 +9,26 @@ const HelpRequestForm = () => {
   const [address, setAddress] = useState('');
   const [requestType, setRequestType] = useState('material-assistance');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+  // const checkIfUserIsLoggedIn = () => {
+  //     // Insérez ici votre logique pour vérifier si l'utilisateur est connecté
+  //     // Par exemple, vous pouvez vérifier si un token d'authentification est présent dans le localStorage
+  //   return localStorage.getItem('authToken') !== null; // Par exemple
+  // };
+    
+  //   // Vérifiez si l'utilisateur est connecté avant de soumettre le formulaire
+  // const userLoggedIn = checkIfUserIsLoggedIn(); // Remplacez cette fonction par votre propre logique
+
+  //   if (!checkIfUserIsLoggedIn()) {
+  //     // Rediriger l'utilisateur vers la page de connexion s'il n'est pas connecté
+  //     window.location.href = '/'; // Utilisez navigate pour la redirection
+  //     return null; // Ne rend pas le formulaire si l'utilisateur n'est pas connecté
+  //   }
+
 
     try {
       const response = await axios.post('http://localhost:3000/help_requests', {
