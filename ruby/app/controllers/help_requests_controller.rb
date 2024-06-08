@@ -55,8 +55,22 @@ class HelpRequestsController < ApplicationController
     head :no_content
   end
 
-  private
+  def volunteer
+    help_request = HelpRequest.find(params[:help_request_id])
+    volunteer = current_user
 
+    # Logique pour enregistrer la réponse du volontaire à la demande d'aide
+    # Par exemple, vous pouvez créer un nouvel objet dans la base de données pour enregistrer cette relation.
+
+    # Créez une nouvelle conversation entre le volontaire et l'utilisateur ayant créé la demande d'aide
+    conversation = Conversation.create(sender: volunteer, recipient: help_request.user)
+
+    # Redirigez l'utilisateur volontaire vers la conversation nouvellement créée
+    redirect_to conversation_path(conversation)
+  end
+end
+
+  private
 
   def authenticate_user!
     unless logged_in?
@@ -69,7 +83,7 @@ class HelpRequestsController < ApplicationController
     # Par exemple, vous pouvez vérifier si session[:user_id] est défini
     session[:user_id].present?
   end
-end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_help_request
     @help_request = HelpRequest.find(params[:id])

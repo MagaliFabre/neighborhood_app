@@ -7,6 +7,9 @@ import { HomePage } from "./HomePage";
 import Dashboard from "./Dashboard";
 import MobileFooter from "../components/layout/MobileFooter";
 import HelpRequestForm from "./HelpRequestForm"
+import ConversationList from './ConversationList';
+import Conversation from './Conversation';
+
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -65,9 +68,19 @@ function App() {
             element={<Dashboard loggedInStatus={loggedInStatus} />}
           />
           <Route 
-          exact
-          path="/new-help-request" 
-          element={<HelpRequestForm/>} />
+            exact
+            path="/new-help-request" 
+            element={<HelpRequestForm/>} 
+          />
+          <Route 
+            exact 
+            path="/conversationlist" 
+            element={<ConversationList/>} 
+          />
+          <Route 
+            path="/conversations/:id" 
+            element={<Conversation/>} 
+          />
         </Routes>
         <MobileFooter />
       </div>

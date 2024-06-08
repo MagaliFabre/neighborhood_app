@@ -5,15 +5,16 @@ Rails.application.routes.draw do
   get :logged_in, to: "sessions#logged_in"
   root to: "static#home"
 
-  # Correction de la syntaxe ici
   resources :help_requests, controller: 'help_requests', only: [:create, :show, :update, :destroy, :index]
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :conversations, only: [:index, :show, :create] do
+    resources :messages, only: [:index, :create]
+  end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  resources :help_requests do
+    post 'volunteer', to: 'help_requests#volunteer'
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
   mount Sidekiq::Web => '/sidekiq'
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
