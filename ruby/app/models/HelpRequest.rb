@@ -3,8 +3,10 @@ class HelpRequest < ApplicationRecord
 
   # Validation des attributs
   validates :title, presence: true, length: { maximum: 100 }
-  validates :description, presence: true, length: { maximum: 500 }
+  validates :description, presence: true, length: { maximum: 300 }
   validates :address, presence: true
+  validates :request_type, presence: true, inclusion: { in: ['material-assistance', 'human-assistance'] }
+  validates :status, presence: true, inclusion: { in: ['fulfilled', 'unfulfilled'] }
 
   # Ajout de la logique de géocodage
   before_validation :geocode_address

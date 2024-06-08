@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   delete :logout, to: "sessions#logout"
   get :logged_in, to: "sessions#logged_in"
   root to: "static#home"
-  resources :help_requests, only: [:create, :show, :update, :destroy]
+
+  # Correction de la syntaxe ici
+  resources :help_requests, controller: 'help_requests', only: [:create, :show, :update, :destroy, :index]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

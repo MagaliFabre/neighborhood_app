@@ -6,7 +6,7 @@ import Navbar from "../components/layout/Navbar";
 import { HomePage } from "./HomePage";
 import Dashboard from "./Dashboard";
 import MobileFooter from "../components/layout/MobileFooter";
-
+import HelpRequestForm from "./HelpRequestForm"
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -64,6 +64,10 @@ function App() {
             path="/dashboard"
             element={<Dashboard loggedInStatus={loggedInStatus} />}
           />
+          <Route 
+          exact
+          path="/new-help-request" 
+          element={<HelpRequestForm/>} />
         </Routes>
         <MobileFooter />
       </div>
