@@ -7,11 +7,6 @@ const mapContainerStyle = {
   height: '400px',
 };
 
-const center = {
-  lat: 48.8566,
-  lng: 2.3522,
-};
-
 function MapContainer() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -21,10 +16,23 @@ function MapContainer() {
   const mapRef = useRef(null);
   const [mapMarkers, setMapMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState({ lat: 48.8566, lng: 2.3522 }); // Default to Paris
 
   useEffect(() => {
-    if (isLoaded && mapRef.current) {
-      mapRef.current.panTo(center);
+    if (isLoaded) {
+      // Try to get the user's current location
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation({ lat: latitude, lng: longitude });
+          if (mapRef.current) {
+            mapRef.current.panTo({ lat: latitude, lng: longitude });
+          }
+        },
+        () => {
+          console.error('Error getting the current location');
+        }
+      );
     }
   }, [isLoaded]);
 
@@ -51,7 +59,7 @@ function MapContainer() {
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
-      center={center}
+      center={currentLocation}
       zoom={10}
       onLoad={(map) => {
         mapRef.current = map;

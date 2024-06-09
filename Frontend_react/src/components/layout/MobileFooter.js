@@ -4,6 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Link } from 'react-router-dom'; // Importation de Link
 
 function MobileFooter() {
   const [value, setValue] = useState(0);
@@ -17,10 +18,26 @@ function MobileFooter() {
       showLabels
       style={{ width: '100%', position: 'fixed', bottom: 0, zIndex: 1000 }}
     >
-      <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-      <BottomNavigationAction label="Dashboard" icon={<DashboardIcon />} />
-      <BottomNavigationAction label="Notifications" icon={<NotificationsIcon />} />
-      <BottomNavigationAction label="Profile" icon={<AccountCircleIcon />} />
+      <BottomNavigationAction
+        label="Home"
+        icon={<HomeIcon />}
+        component={Link}
+        to="/" 
+      />
+      <BottomNavigationAction
+        label="Dashboard"
+        icon={<DashboardIcon />}
+        component={Link}
+        to="/dashboard" 
+      />
+      <BottomNavigationAction
+        label="Notifications"
+        icon={<NotificationsIcon />}
+      />
+      <BottomNavigationAction
+        label="Profile"
+        icon={<AccountCircleIcon />}
+      />
     </BottomNavigation>
   );
 }
