@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, TextField, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,7 +9,12 @@ export const Login = ({ handleSuccessfulAuth }) => {
     password: '',
   });
   const [loginErrors, setLoginErrors] = useState('');
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    axios.defaults.headers.common['X-CSRF-Token'] = csrfToken;
+  }, []);
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -26,7 +31,9 @@ export const Login = ({ handleSuccessfulAuth }) => {
     .then(response => {
       if (response.data.logged_in) {
         handleSuccessfulAuth(response.data);
-        navigate('/dashboard');
+        window.location.href = '/dashboard';
+      }else {
+        setLoginErrors('Invalid email or password');
       }
     })
     .catch(error => {

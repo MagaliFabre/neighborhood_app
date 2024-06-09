@@ -6,7 +6,7 @@ const ConversationList = () => {
   const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/conversations')
+    axios.get('http://localhost:3000/conversations', { withCredentials: true })
       .then(response => {
         setConversations(response.data);
       })

@@ -9,19 +9,18 @@ class MessagesController < ApplicationController
 
   def create
     conversation = Conversation.find(params[:conversation_id])
-    sender = current_user
+    sender = @current_user
     recipient = conversation.sender == sender ? conversation.recipient : conversation.sender
-    message = conversation.messages.new(message_params)
-    message.user = sender
+    @message = @conversation.messages.new(message_params)
+    @message.user = sender
 
-    if message.save
-      # Rediriger l'utilisateur après l'envoi du message
-      redirect_to conversation_path(conversation)
+    if @message.save
+      render json: @message, status: :created
     else
-      # Gérer les erreurs de validation si nécessaire
-      # Rediriger l'utilisateur vers une page d'erreur ou afficher un message d'erreur
+      render json: @message.errors, status: :unprocessable_entity
     end
   end
+
 
   private
 

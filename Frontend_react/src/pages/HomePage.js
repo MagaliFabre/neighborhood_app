@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-import { Registration } from './auth/Registration';
+import SignupButton from '../components/elements/SignupButton'; // Import du composant SignupButton
+// import { Registration } from './auth/Registration';
 import { Login } from './auth/Login';
 
 
@@ -34,12 +34,13 @@ export const HomePage = (props) => {
       <h1>Home</h1>
       <h1>Status: {loggedInStatus}</h1>
       <button onClick={handleLogoutClick}>Logout</button>
-      <Registration handleSuccessfulAuth={handleSuccessfulAuth} />
+      {/* <Registration handleSuccessfulAuth={handleSuccessfulAuth} /> */}
+      <SignupButton /> {/* Bouton "Sign Up" */}
       <Login handleSuccessfulAuth={handleSuccessfulAuth} />
     </div>
   );
 };
-
+ export default HomePage;
 
 // import React from 'react';
 // import Registration from './auth/Registration';

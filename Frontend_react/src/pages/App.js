@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../components/layout/Navbar";
-import { HomePage } from "./HomePage";
+import HomePage from "./HomePage";
 import Dashboard from "./Dashboard";
 import MobileFooter from "../components/layout/MobileFooter";
-import HelpRequestForm from "./HelpRequestForm"
+import HelpRequestForm from "./HelpRequestForm";
 import ConversationList from './ConversationList';
 import Conversation from './Conversation';
+import Registration from './auth/Registration';
 
 axios.defaults.withCredentials = true;
 
@@ -48,46 +49,51 @@ function App() {
   }, []);
 
   return (
-      <div className="app">
-        <Navbar />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <HomePage
-                handleLogin={handleLogin}
-                handleLogout={handleLogout}
-                loggedInStatus={loggedInStatus}
-              />
-            }
-          />
-          <Route
-            exact
-            path="/dashboard"
-            element={<Dashboard loggedInStatus={loggedInStatus} />}
-          />
-          <Route 
-            exact
-            path="/new-help-request" 
-            element={<HelpRequestForm/>} 
-          />
-          <Route 
-            exact 
-            path="/conversationlist" 
-            element={<ConversationList/>} 
-          />
-          <Route 
-            path="/conversations/:id" 
-            element={<Conversation/>} 
-          />
-        </Routes>
-        <MobileFooter />
-      </div>
+    <div className="app">
+      <Navbar />
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <HomePage
+              handleLogin={handleLogin}
+              handleLogout={handleLogout}
+              loggedInStatus={loggedInStatus}
+            />
+          }
+        />
+        <Route
+          path="/signup"
+          element={<Registration handleSuccessfulAuth={handleLogin} />}
+        />
+        <Route
+          exact
+          path="/dashboard"
+          element={<Dashboard loggedInStatus={loggedInStatus} />}
+        />
+        <Route 
+          exact
+          path="/new-help-request" 
+          element={<HelpRequestForm />} 
+        />
+        <Route 
+          exact 
+          path="/conversationlist" 
+          element={<ConversationList />} 
+        />
+        <Route 
+          path="/conversations/:id" 
+          element={<Conversation />} 
+        />
+      </Routes>
+      <MobileFooter />
+    </div>
   );
 }
 
 export default App;
+
 
 
 

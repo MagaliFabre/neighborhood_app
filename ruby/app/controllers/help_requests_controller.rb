@@ -1,7 +1,7 @@
 require 'geocoder'
 
 class HelpRequestsController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!
   before_action :set_help_request, only: [:show, :update, :destroy, :create]
 
   # POST /help_requests
