@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_08_131044) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_10_220636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,15 +20,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_08_131044) do
     t.string "address"
     t.float "latitude"
     t.float "longitude"
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
+    t.string "request_type"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "request_type"
-    t.string "status", default: "unfulfilled"
     t.index ["user_id"], name: "index_help_requests_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "sender_id", null: false
+    t.bigint "receiver_id", null: false
+    t.text "content"
+    t.datetime "sent_at"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["receiver_id"], name: "index_messages_on_receiver_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
+
   create_table "users", force: :cascade do |t|
+    t.string "name"
     t.string "email"
     t.string "password_digest"
     t.datetime "created_at", null: false
@@ -36,4 +49,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_08_131044) do
   end
 
   add_foreign_key "help_requests", "users"
+  add_foreign_key "messages", "users", column: "receiver_id"
+  add_foreign_key "messages", "users", column: "sender_id"
 end

@@ -35,6 +35,21 @@ class HelpRequestsController < ApplicationController
     end
   end
 
+  # POST /help_requests/create_chat_or_message_flow
+  def create_message_flow
+    # Logique pour créer un flux de messages
+    @help_request = HelpRequest.find(params[:id])
+    # Assurez-vous que les validations et les permissions sont vérifiées ici
+    @message_flow = @help_request.message_flows.create(user: current_user)
+
+    if @message_flow.persisted?
+      render json: { message_flow_id: @message_flow.id }, status: :created
+    else
+      render json: { errors: @message_flow.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+
   # GET /help_requests/:id
   def show
     render json: @help_request
@@ -57,7 +72,6 @@ class HelpRequestsController < ApplicationController
 
   private
 
-
   def authenticate_user!
     unless logged_in?
       render json: { error: 'You must sign in to access this page' }, status: :unauthorized
@@ -65,11 +79,9 @@ class HelpRequestsController < ApplicationController
   end
 
   def logged_in?
-    # Mettez votre logique pour vérifier si l'utilisateur est connecté ici
-    # Par exemple, vous pouvez vérifier si session[:user_id] est défini
     session[:user_id].present?
   end
-end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_help_request
     @help_request = HelpRequest.find(params[:id])
@@ -79,3 +91,4 @@ end
   def help_request_params
     params.require(:help_request).permit(:title, :description, :address, :request_type, :status)
   end
+end

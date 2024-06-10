@@ -1,22 +1,58 @@
 import React, { useState, useEffect } from "react";
-import {Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../components/layout/Navbar";
 import { HomePage } from "./HomePage";
 import Dashboard from "./Dashboard";
 import MobileFooter from "../components/layout/MobileFooter";
-import HelpRequestForm from "./HelpRequestForm"
+import HelpRequestForm from "./HelpRequestForm";
+// import ChatroomWebSocket from './ChatroomWebSocket';
+import MessageFlow from './MessageFlow';
+
+
 axios.defaults.withCredentials = true;
 
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState("NOT_LOGGED_IN");
   const [user, setUser] = useState({});
+  const [username, setUsername] = useState(''); // Définir la variable username
+  const [password, setPassword] = useState(''); // Définir la variable password
+
+  const [chatroom, setChatroom] = useState(null);
+  const [messages, setMessages] = useState([]);
+
+  const updateApp = (message) => {
+    setMessages([...messages, message]);
+  };
 
   const handleLogin = (data) => {
     setLoggedInStatus("LOGGED_IN");
     setUser(data.user);
   };
+
+  // Utiliser username et password dans votre requête fetch
+  useEffect(() => {
+    if (username && password) {
+      fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ username, password })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.logged_in) {
+            setUser(data.user);
+          } else {
+            alert('Invalid credentials');
+          }
+        });
+    }
+  }, [username, password]);
 
   const handleLogout = () => {
     setLoggedInStatus("NOT_LOGGED_IN");
@@ -45,96 +81,63 @@ function App() {
   }, []);
 
   return (
-      <div className="app">
-        <Navbar />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <HomePage
-                handleLogin={handleLogin}
-                handleLogout={handleLogout}
-                loggedInStatus={loggedInStatus}
-              />
-            }
-          />
-          <Route
-            exact
-            path="/dashboard"
-            element={<Dashboard loggedInStatus={loggedInStatus} />}
-          />
-          <Route 
+    <div className="app">
+      <Navbar />
+      <Routes>
+        <Route
           exact
-          path="/new-help-request" 
-          element={<HelpRequestForm/>} />
-        </Routes>
-        <MobileFooter />
-      </div>
+          path="/"
+          element={
+            <HomePage
+              handleLogin={handleLogin}
+              handleLogout={handleLogout}
+              loggedInStatus={loggedInStatus}
+              setUsername={setUsername} // Passer la fonction setUsername
+              setPassword={setPassword} // Passer la fonction setPassword
+            />
+          }
+        />
+        <Route
+          exact
+          path="/dashboard"
+          element={<Dashboard loggedInStatus={loggedInStatus} />}
+        />
+        <Route
+          exact
+          path="/new-help-request"
+          element={<HelpRequestForm />}
+        />
+        <Route
+          path="/message_flows/:messageFlowId"
+          component={MessageFlow}
+        />
+      </Routes>
+      <MobileFooter />
+    </div>
   );
 }
 
-export default App;
 
 
-
-
-
-
-// axios.defaults.withCredentials = true;
-
-// const App = () => {
-//   constructor() {
-//     super();
-
-//     this.state = {
-//       loogedInStatus: "NOT_LOGGED_IN",
-//       user: {}
-//     }
-//   }
-
-//   render() {
-//     return (
-//     <div className='app'>
-      
-//       <Navbar />
-//         <Routes>
-//           <Route exact path={"/"} element={ <HomePage/>} />
-//           <Route exact path={"/dashboard"} element={<Dashboard/>} />
-//         </Routes>
-//         <MobileFooter />
-      
+//   return (
+//     <div>
+//       {user ? (
+//         <div>
+//           <h1>Welcome, {user.username}</h1>
+//           {chatroom && (
+//             <ChatroomWebSocket
+//               cableApp={cableApp}
+//               chatroomId={chatroom.id}
+//               messages={messages}
+//               updateApp={updateApp}
+//             />
+//           )}
+//         </div>
+//       ) : (
+//         <Login setUser={setUser} />
+//       )}
 //     </div>
 //   );
-//   }
-// }
+// };
 
-// export default App;
-
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import Navbar from '../components/layout/Navbar';
-// import MobileFooter from '../components/layout/MobileFooter';
-// import HomePage from './HomePage';
-// import SignupPage from './SignupPage';
-// import SigninPage from './SigninPage';
-// import AccueilPage from './AccueilPage';
-// import HelpRequestForm from './HelpRequestForm';
-
-// function App() {
-//   const [setUser]=useState({})
-//   return (
-//     <Router>
-//       <Navbar />
-//       <Routes>
-//         <Route path="/" element={<HomePage />} />
-//         <Route path="/signup" element={<SignupPage />} />
-//         <Route path="/signin" element={<SigninPage setUser={setUser} />} /> 
-//         <Route path="/accueil" element={<AccueilPage />} />
-//         <Route path="/new-help-request" element={<HelpRequestForm />} />
-//       </Routes>
-//       <MobileFooter />
-//     </Router>
-//   );
-// }
-
-// export default App;
+export default App;

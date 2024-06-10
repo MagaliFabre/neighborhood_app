@@ -18,6 +18,23 @@ function MapContainer() {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [currentLocation, setCurrentLocation] = useState({ lat: 48.8566, lng: 2.3522 }); // Default to Paris
 
+  const handleVolunteerClick = async () => {
+    if (!selectedMarker) return; // No marker selected
+
+    try {
+      // Make a POST request to create a chat or message flow associated with the selected marker's help request
+      const response = await axios.post(`http://localhost:3000/help_requests/${selectedMarker.id}/create_chat_or_message_flow`);
+
+      // Extract the chat or message flow ID from the response
+      const chatOrMessageFlowId = response.data.chat_or_message_flow_id;
+
+      // Now you can use the chatOrMessageFlowId to navigate to the chat or message flow page or perform any other action
+      console.log('Chat or message flow created with ID:', chatOrMessageFlowId);
+    } catch (error) {
+      console.error('Error creating chat or message flow:', error);
+    }
+  };
+
   useEffect(() => {
     if (isLoaded) {
       // Try to get the user's current location
@@ -56,6 +73,7 @@ function MapContainer() {
     setSelectedMarker(marker);
   };
 
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={mapContainerStyle}
@@ -83,8 +101,8 @@ function MapContainer() {
       }}
     >
       {mapMarkers.map(marker => (
-        <Marker 
-          key={marker.id} 
+        <Marker
+          key={marker.id}
           position={{ lat: marker.latitude, lng: marker.longitude }}
           onClick={() => handleMarkerClick(marker)}
           icon={{
@@ -102,7 +120,8 @@ function MapContainer() {
             <h3>{selectedMarker.title}</h3>
             <p>{selectedMarker.description}</p>
             <p>Type: {selectedMarker.request_type}</p>
-            <button onClick={() => {/* handle volunteer action */}}>Volunteer</button>
+            {/* Button to trigger the handleVolunteerClick function */}
+            <button onClick={handleVolunteerClick}>Volunteer</button>
           </div>
         </InfoWindow>
       )}

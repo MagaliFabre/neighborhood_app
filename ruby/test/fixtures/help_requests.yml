@@ -1,0 +1,19 @@
+one:
+  title: Need Help with Groceries
+  description: I need assistance with buying groceries.
+  address: 1600 Amphitheatre Parkway, Mountain View, CA
+  latitude: 37.4220
+  longitude: -122.0841
+  user: one
+  request_type: material-assistance
+  status: unfulfilled
+
+two:
+  title: Need Help with Moving
+  description: I need assistance with moving to a new apartment.
+  address: 1 Infinite Loop, Cupertino, CA
+  latitude: 37.3318
+  longitude: -122.0312
+  user: two
+  request_type: human-assistance
+  status: unfulfilled
