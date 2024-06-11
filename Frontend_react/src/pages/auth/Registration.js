@@ -20,6 +20,7 @@ export const Registration = ({ handleSuccessfulAuth }) => {
     event.preventDefault();
     axios.post("http://localhost:3000/registrations", {
       user: {
+        name: userData.name,
         email: userData.email,
         password: userData.password,
         password_confirmation: userData.passwordConfirmation
@@ -43,6 +44,16 @@ export const Registration = ({ handleSuccessfulAuth }) => {
           Sign Up
         </Typography>
         <form onSubmit={handleSubmit}>
+        <TextField 
+            label="Name" 
+            name="name" 
+            variant="outlined" 
+            fullWidth 
+            margin="normal" 
+            value={userData.name} 
+            onChange={handleChange} 
+            required 
+          />
           <TextField 
             label="Email Address" 
             name="email" 
