@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
-// import { CssBaseline, Container } from '@mui/material';
 
 import Navbar from "../components/layout/Navbar";
 import { HomePage } from "./HomePage";
@@ -10,7 +9,6 @@ import MobileFooter from "../components/layout/MobileFooter";
 import HelpRequestForm from "./HelpRequestForm";
 import ConversationMessages from './ConversationMessages';
 import Registration from "./auth/Registration";
-// import MapContainer from "../components/modules/MapContainer";
 import MessageList from "./MessageList"
 
 axios.defaults.withCredentials = true;
@@ -89,7 +87,7 @@ function App() {
               handleLogin={handleLogin}
               handleLogout={handleLogout}
               loggedInStatus={loggedInStatus}
-              setUsername={setUsername} // Passer la fonction setUsername
+              setUsername={setUsername}
               setPassword={setPassword} // Passer la fonction setPassword
             />
           }
@@ -97,24 +95,20 @@ function App() {
         <Route
           exact
           path="/dashboard"
-          element={<Dashboard loggedInStatus={loggedInStatus} currentUserId={currentUserId} />}
+          element={<Dashboard loggedInStatus={loggedInStatus} currentUserId={currentUserId} 
+            />}
         />
         <Route
           exact
           path="/new-help-request"
-          element={<HelpRequestForm />}
+          element={<HelpRequestForm loggedInStatus={loggedInStatus} currentUserId={currentUserId} />}
         />
+        <Route exact path="/messages" element={<MessageList />} />
+        <Route exact path="/conversation/:id" element={<ConversationMessages />} />
         <Route
-          path="/messages"
-          element={<MessageList />}
-        />
-        <Route
+          exact
           path="/signup"
-          element={<Registration handleSuccessfulAuth={handleLogin} />}
-        />
-        <Route
-          path="/annonces/:title/messages"
-          element={<ConversationMessages />}
+          element={<Registration handleLogin={handleLogin} loggedInStatus={loggedInStatus} />}
         />
       </Routes>
       {/* <Container>

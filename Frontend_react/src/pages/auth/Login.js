@@ -18,11 +18,12 @@ export const Login = ({ handleSuccessfulAuth }) => {
   const handleSubmit = (event) => {
     console.log("SUBMIT");
     event.preventDefault();
-    axios.post('http://localhost:3000/sessions', {
-      user: {
-        email: userData.email,
-        password: userData.password,
-      },
+    axios
+      .post('http://localhost:3000/sessions', {
+        user: {
+          email: userData.email,
+          password: userData.password,
+        },
     }, { withCredentials: true })
     .then(response => {
       console.log(response);

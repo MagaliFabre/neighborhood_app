@@ -1,34 +1,45 @@
 Rails.application.routes.draw do
+  # Sessions and Registrations routes
   resources :sessions, only: [:create]
   resources :registrations, only: [:create]
+
+  # Help Requests routes
   resources :help_requests, only: [:create, :show, :update, :destroy, :index] do
     member do
       post 'create_message_flow'
     end
   end
 
+  # Messages routes
+  resources :messages, only: [:create, :index, :show] do
+    collection do
+      get 'annonce_messages'
+    end
+    member do
+      get 'messages', to: 'messages#show_conversation', as: 'conversation'
+    end
+  end
+
+  # Logout and Logged-in routes
   delete :logout, to: "sessions#logout"
   get :logged_in, to: "sessions#logged_in"
+
+  # Static home page route
   root to: "static#home"
 
-  get 'annonces/:title/messages', to: 'messages#show_conversation', as: 'annonce_messages'
-
-  get 'messages/user_messages', to: 'messages#user_messages'
-
-  resources :messages, only: [:index, :create]
+  # User routes
   resources :users, only: [:index] do
     member do
       get 'chatrooms'
     end
   end
-  # resources :chatrooms, only: [:index, :create, :show]
 
-  mount ActionCable.server => '/cable'
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-  mount Sidekiq::Web => '/sidekiq'
+  # Nested resource for annonces with messages
+  resources :annonces do
+    resources :messages, only: [:create, :index] do
+      collection do
+        get 'annonce_messages'
+      end
+    end
+  end
 end

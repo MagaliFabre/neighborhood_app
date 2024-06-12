@@ -1,6 +1,7 @@
 class HelpRequest < ApplicationRecord
   belongs_to :user
-
+  has_many :messages
+  
   # Validation des attributs
   validates :title, presence: true, length: { maximum: 100 }
   validates :description, presence: true, length: { maximum: 300 }

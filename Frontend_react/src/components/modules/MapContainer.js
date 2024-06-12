@@ -47,29 +47,27 @@ function MapContainer({ currentUserId }) {
 
   const handleMessageSend = async () => {
     if (!selectedMarker) return; // No marker selected
-
+  
     try {
-      // Make a POST request to create a chat or message flow associated with the selected marker's help request
-      const response = await axios.post('http://localhost:3000/messages#create', {
+      const response = await axios.post('http://localhost:3000/messages', {
         message: {
           content: messageContent,
-          title: selectedMarker.title, // Include the title of the help request
+          title: selectedMarker.title,
           sender_id: currentUserId,
-          receiver_id: selectedMarker.user_id, 
+          receiver_id: selectedMarker.user_id,
+          help_request_id: selectedMarker.id, // Assurez-vous d'envoyer l'ID de la demande d'aide
           sent_at: new Date(),
           status: 'sent'
         }
       });
-
-      // Handle the response, e.g., navigate to the chat page or show a success message
+  
       console.log('Message sent:', response.data);
-
       handleModalClose();
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
-
+  
   useEffect(() => {
     if (isLoaded) {
       // Try to get the user's current location
