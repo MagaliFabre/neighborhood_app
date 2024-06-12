@@ -7,10 +7,11 @@ const Dashboard = ({ loggedInStatus }) => {
       <div>
         <h1>Dashboard</h1>
         <h1>Status: {loggedInStatus}</h1>
-        <MapContainer markers={markers} />
+        <MapContainer markers={markers}/>
       </div>
     </div>
   );
 };
+
 const markers = [];
 export default Dashboard;

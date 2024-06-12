@@ -11,13 +11,17 @@ Rails.application.routes.draw do
   get :logged_in, to: "sessions#logged_in"
   root to: "static#home"
 
+  get 'annonces/:title/messages', to: 'messages#show_conversation', as: 'annonce_messages'
+
+  get 'messages/user_messages', to: 'messages#user_messages'
+
   resources :messages, only: [:index, :create]
   resources :users, only: [:index] do
     member do
       get 'chatrooms'
     end
   end
-  resources :chatrooms, only: [:index, :create, :show]
+  # resources :chatrooms, only: [:index, :create, :show]
 
   mount ActionCable.server => '/cable'
 

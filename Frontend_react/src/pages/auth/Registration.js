@@ -94,7 +94,7 @@ export const Registration = ({ handleSuccessfulAuth }) => {
     </Container>
   );
 };
-
+export default Registration;
 
 // import React, { useState } from 'react';
 // import { Container, Typography, TextField, Button, Box } from '@mui/material';

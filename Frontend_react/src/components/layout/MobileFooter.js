@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 import { Link } from 'react-router-dom'; // Importation de Link
 
 function MobileFooter() {
@@ -19,24 +20,26 @@ function MobileFooter() {
       style={{ width: '100%', position: 'fixed', bottom: 0, zIndex: 1000 }}
     >
       <BottomNavigationAction
-        label="Home"
-        icon={<HomeIcon />}
-        component={Link}
-        to="/" 
-      />
-      <BottomNavigationAction
         label="Dashboard"
         icon={<DashboardIcon />}
         component={Link}
         to="/dashboard" 
       />
       <BottomNavigationAction
-        label="Notifications"
-        icon={<NotificationsIcon />}
+        label="Post"
+        icon={<AddCircleIcon />}
+        component={Link}
+        to="/new-help-request" 
       />
       <BottomNavigationAction
-        label="Profile"
-        icon={<AccountCircleIcon />}
+        label="Messages"
+        icon={<MessageIcon />}
+        component={Link}
+        to="/messages" 
+      />
+      <BottomNavigationAction
+        label="Notifications"
+        icon={<NotificationsIcon />}
       />
     </BottomNavigation>
   );

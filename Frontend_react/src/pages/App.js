@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
+// import { CssBaseline, Container } from '@mui/material';
 
 import Navbar from "../components/layout/Navbar";
 import { HomePage } from "./HomePage";
 import Dashboard from "./Dashboard";
 import MobileFooter from "../components/layout/MobileFooter";
 import HelpRequestForm from "./HelpRequestForm";
-// import ChatroomWebSocket from './ChatroomWebSocket';
-import MessageFlow from './MessageFlow';
-
+import ConversationMessages from './ConversationMessages';
+import Registration from "./auth/Registration";
+// import MapContainer from "../components/modules/MapContainer";
+import MessageList from "./MessageList"
 
 axios.defaults.withCredentials = true;
 
@@ -19,19 +21,13 @@ function App() {
   const [username, setUsername] = useState(''); // Définir la variable username
   const [password, setPassword] = useState(''); // Définir la variable password
 
-  const [chatroom, setChatroom] = useState(null);
-  const [messages, setMessages] = useState([]);
-
-  const updateApp = (message) => {
-    setMessages([...messages, message]);
-  };
+  const currentUserId = user.id; // Utiliser l'ID de l'utilisateur connecté
 
   const handleLogin = (data) => {
     setLoggedInStatus("LOGGED_IN");
     setUser(data.user);
   };
 
-  // Utiliser username et password dans votre requête fetch
   useEffect(() => {
     if (username && password) {
       fetch('http://localhost:3000/login', {
@@ -82,6 +78,7 @@ function App() {
 
   return (
     <div className="app">
+      {/* <CssBaseline /> */}
       <Navbar />
       <Routes>
         <Route
@@ -100,7 +97,7 @@ function App() {
         <Route
           exact
           path="/dashboard"
-          element={<Dashboard loggedInStatus={loggedInStatus} />}
+          element={<Dashboard loggedInStatus={loggedInStatus} currentUserId={currentUserId} />}
         />
         <Route
           exact
@@ -108,36 +105,25 @@ function App() {
           element={<HelpRequestForm />}
         />
         <Route
-          path="/message_flows/:messageFlowId"
-          component={MessageFlow}
+          path="/messages"
+          element={<MessageList />}
+        />
+        <Route
+          path="/signup"
+          element={<Registration handleSuccessfulAuth={handleLogin} />}
+        />
+        <Route
+          path="/annonces/:title/messages"
+          element={<ConversationMessages />}
         />
       </Routes>
+      {/* <Container>
+        <MapContainer currentUserId={currentUserId} />
+        <MessageList currentUserId={currentUserId} />
+      </Container> */}
       <MobileFooter />
     </div>
   );
 }
-
-
-
-//   return (
-//     <div>
-//       {user ? (
-//         <div>
-//           <h1>Welcome, {user.username}</h1>
-//           {chatroom && (
-//             <ChatroomWebSocket
-//               cableApp={cableApp}
-//               chatroomId={chatroom.id}
-//               messages={messages}
-//               updateApp={updateApp}
-//             />
-//           )}
-//         </div>
-//       ) : (
-//         <Login setUser={setUser} />
-//       )}
-//     </div>
-//   );
-// };
 
 export default App;

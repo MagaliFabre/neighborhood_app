@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Utilisez useNavigate pour la redirection
+import { Container, Typography, TextField, Button, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material'; // Importez les composants MUI nécessaires
 
 
 const HelpRequestForm = () => {
@@ -47,47 +48,58 @@ const HelpRequestForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Title:</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Description:</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Address:</label>
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Request Type:</label>
-        <select
-          value={requestType}
-          onChange={(e) => setRequestType(e.target.value)}
-          required
-        >
-          <option value="material-assistance">Material Assistance</option>
-          <option value="human-assistance">Human Assistance</option>
-        </select>
-      </div>
-      <button type="submit">Create Help Request</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    <Container maxWidth="sm">
+      <Box mt={4}>
+        <Typography variant="h4" gutterBottom>
+          Create Help Request
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Title"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <TextField
+            label="Description"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <TextField
+            label="Address"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+          <FormControl variant="outlined" fullWidth margin="normal">
+            <InputLabel>Request Type</InputLabel>
+            <Select
+              value={requestType}
+              onChange={(e) => setRequestType(e.target.value)}
+              label="Request Type"
+              required
+            >
+              <MenuItem value="material-assistance">Material Assistance</MenuItem>
+              <MenuItem value="human-assistance">Human Assistance</MenuItem>
+            </Select>
+          </FormControl>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Create Help Request
+          </Button>
+          {error && <Typography color="error">{error}</Typography>}
+        </form>
+      </Box>
+    </Container>
   );
 };
 

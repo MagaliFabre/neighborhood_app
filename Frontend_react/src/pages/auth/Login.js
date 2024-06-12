@@ -16,6 +16,7 @@ export const Login = ({ handleSuccessfulAuth }) => {
   };
 
   const handleSubmit = (event) => {
+    console.log("SUBMIT");
     event.preventDefault();
     axios.post('http://localhost:3000/sessions', {
       user: {
@@ -24,6 +25,7 @@ export const Login = ({ handleSuccessfulAuth }) => {
       },
     }, { withCredentials: true })
     .then(response => {
+      console.log(response);
       if (response.data.logged_in) {
         handleSuccessfulAuth(response.data);
         navigate('/dashboard');
