@@ -18,7 +18,6 @@ const Registration = ({ handleSuccessfulAuth }) => {
   };
 
   const handleSubmit = (event) => {
-    console.log("SUBMIT");
     event.preventDefault();
     axios
       .post('http://localhost:3000/registrations', {
@@ -31,8 +30,8 @@ const Registration = ({ handleSuccessfulAuth }) => {
       }, { withCredentials: true })
       .then((response) => {
         if (response.data.status === 'created') {
-          handleSuccessfulAuth(response.data); // Mettre à jour l'état d'authentification
-          navigate('/dashboard'); // Rediriger vers le tableau de bord
+          handleSuccessfulAuth(response.data);
+          navigate('/dashboard'); // Redirection vers le tableau de bord
         }
       })
       .catch((error) => {

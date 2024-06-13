@@ -28,6 +28,17 @@ function ConversationMessages({ currentUserId }) {
   const fetchMessages = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/annonces/${id}/messages/annonce_messages`);
+      const allMessages = [...response.data.sent_messages, ...response.data.received_messages]
+      allMessages.sort((a, b) => {
+        if (a.sent_at < b.sent_at) {
+          return -1;
+      }
+        if (a.sent_at > b.sent_at) {
+          return 1;
+      }
+        return 0;
+      })
+      console.log(allMessages)
       setMessages(response.data);
     } catch (error) {
       console.error('Error fetching messages:', error);

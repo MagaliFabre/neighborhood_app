@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../components/layout/Navbar";
@@ -16,14 +16,20 @@ axios.defaults.withCredentials = true;
 function App() {
   const [loggedInStatus, setLoggedInStatus] = useState("NOT_LOGGED_IN");
   const [user, setUser] = useState({});
-  const [username, setUsername] = useState(''); // Définir la variable username
-  const [password, setPassword] = useState(''); // Définir la variable password
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const currentUserId = user.id; // Utiliser l'ID de l'utilisateur connecté
+  const currentUserId = user.id;
+  const navigate = useNavigate();
 
   const handleLogin = (data) => {
     setLoggedInStatus("LOGGED_IN");
     setUser(data.user);
+  };
+
+  const handleSuccessfulAuth = (data) => {
+    handleLogin(data);
+    navigate("/dashboard"); // Redirect to dashboard
   };
 
   useEffect(() => {
@@ -53,7 +59,7 @@ function App() {
     setUser({});
   };
 
-  const checkLoginStatus = () => {
+  const checkLoginStatus = useCallback(() => {
     axios
       .get("http://localhost:3000/logged_in")
       .then((response) => {
@@ -68,15 +74,14 @@ function App() {
       .catch((error) => {
         console.log("check login error", error);
       });
-  };
+  }, [loggedInStatus]);
 
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+  }, [checkLoginStatus]);
 
   return (
     <div className="app">
-      {/* <CssBaseline /> */}
       <Navbar />
       <Routes>
         <Route
@@ -88,15 +93,14 @@ function App() {
               handleLogout={handleLogout}
               loggedInStatus={loggedInStatus}
               setUsername={setUsername}
-              setPassword={setPassword} // Passer la fonction setPassword
+              setPassword={setPassword}
             />
           }
         />
         <Route
           exact
           path="/dashboard"
-          element={<Dashboard loggedInStatus={loggedInStatus} currentUserId={currentUserId} 
-            />}
+          element={<Dashboard loggedInStatus={loggedInStatus} />}
         />
         <Route
           exact
@@ -108,13 +112,9 @@ function App() {
         <Route
           exact
           path="/signup"
-          element={<Registration handleLogin={handleLogin} loggedInStatus={loggedInStatus} />}
+          element={<Registration handleSuccessfulAuth={handleSuccessfulAuth} loggedInStatus={loggedInStatus} />}
         />
       </Routes>
-      {/* <Container>
-        <MapContainer currentUserId={currentUserId} />
-        <MessageList currentUserId={currentUserId} />
-      </Container> */}
       <MobileFooter />
     </div>
   );
