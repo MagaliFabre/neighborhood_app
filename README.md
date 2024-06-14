@@ -53,7 +53,7 @@ heroku run rails db
 8. Open your deployed application in the browser with `heroku open`.
 
 ## Database Schema
-![Database Schema](https://github.com/MagaliFabre/neighborhood_app/pictureadme/db.png)
+![Database Schema](./picturereadme/db.png)
 
 ## Screenshots
 ### Home Page
