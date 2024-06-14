@@ -40,7 +40,7 @@ export const Login = ({ handleSuccessfulAuth }) => {
 
   return (
     <Container maxWidth="sm">
-      <Box mt={4}>
+      
         <Typography variant="h4" gutterBottom>
           Log In
         </Typography>
@@ -71,7 +71,7 @@ export const Login = ({ handleSuccessfulAuth }) => {
           </Button>
           {loginErrors && <p>{loginErrors}</p>}
         </form>
-      </Box>
+     
     </Container>
   );
 };

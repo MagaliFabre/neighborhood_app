@@ -13,9 +13,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const pages = ['Home', 'Dashboard'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Dashboard', 'Post', 'Messages', 'My Post'];
+const settings = ['Profile', 'Logout'];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -31,17 +32,39 @@ function Navbar() {
   };
 
   const handleCloseNavMenu = (page) => {
-    if (page === 'Home') {
-      navigate('/');
-    } else {
-      navigate(`/${page.toLowerCase()}`);
+    switch(page) {
+      case 'Home':
+        navigate('/');
+        break;
+      case 'Post':
+        navigate('/new-help-request');
+        break;
+      case 'My Post':
+        navigate('/my-help-requests');
+        break;
+      default:
+        navigate(`/${page.toLowerCase().replace(' ', '-')}`);
+        break;
     }
     setAnchorElNav(null);
   };
 
+  const handleLogoutClick = () => {
+    axios
+      .delete("http://localhost:3000/logout", { withCredentials: true })
+      .then((response) => {
+        console.log(response.status);
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log("logout error", error);
+      });
+    setAnchorElUser(null);
+  };
+
   const handleCloseUserMenu = (setting) => {
     if (setting === 'Logout') {
-      // handle logout logic here
+      handleLogoutClick();
     } else {
       navigate(`/${setting.toLowerCase()}`);
     }
@@ -95,7 +118,7 @@ function Navbar() {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={() => setAnchorElNav(null)}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
@@ -158,7 +181,7 @@ function Navbar() {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClose={() => setAnchorElUser(null)}
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>

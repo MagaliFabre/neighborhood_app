@@ -7,6 +7,7 @@ one:
   user: one
   request_type: material-assistance
   status: unfulfilled
+  recycled: false
 
 two:
   title: Need Help with Moving
@@ -17,3 +18,4 @@ two:
   user: two
   request_type: human-assistance
   status: unfulfilled
+  recycled: true

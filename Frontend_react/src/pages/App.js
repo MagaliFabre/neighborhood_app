@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../components/layout/Navbar";
@@ -9,7 +9,10 @@ import MobileFooter from "../components/layout/MobileFooter";
 import HelpRequestForm from "./HelpRequestForm";
 import ConversationMessages from './ConversationMessages';
 import Registration from "./auth/Registration";
-import MessageList from "./MessageList"
+import MessageList from "./MessageList";
+import HelpRequestDetails from "./HelpRequestDetails";
+import HelpRequestEditForm from "./HelpRequestEditForm";
+import MyHelpRequests from "./MyHelpRequests";
 
 axios.defaults.withCredentials = true;
 
@@ -18,9 +21,11 @@ function App() {
   const [user, setUser] = useState({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [unreadMessages, setUnreadMessages] = useState(false);
 
   const currentUserId = user.id;
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = (data) => {
     setLoggedInStatus("LOGGED_IN");
@@ -82,7 +87,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar />
+      {location.pathname !== '/' && <Navbar />}
       <Routes>
         <Route
           exact
@@ -100,22 +105,37 @@ function App() {
         <Route
           exact
           path="/dashboard"
-          element={<Dashboard loggedInStatus={loggedInStatus} />}
+          element={<Dashboard loggedInStatus={loggedInStatus} user={user} />}
         />
         <Route
           exact
           path="/new-help-request"
           element={<HelpRequestForm loggedInStatus={loggedInStatus} currentUserId={currentUserId} />}
         />
-        <Route exact path="/messages" element={<MessageList />} />
+        <Route exact path="/messages" element={<MessageList currentUserId={currentUserId} setUnreadMessages={setUnreadMessages} />} />
         <Route exact path="/conversation/:id" element={<ConversationMessages />} />
         <Route
           exact
           path="/signup"
           element={<Registration handleSuccessfulAuth={handleSuccessfulAuth} loggedInStatus={loggedInStatus} />}
         />
+        <Route
+          exact
+          path="/show-help-request/:id"
+          element={<HelpRequestDetails />}
+        />
+        <Route
+          exact
+          path="/edit-help-request/:id"
+          element={<HelpRequestEditForm />}
+        />
+        <Route
+          exact
+          path="/my-help-requests"
+          element={<MyHelpRequests currentUserId={currentUserId}/>}
+        />
       </Routes>
-      <MobileFooter />
+      {location.pathname !== '/' && <MobileFooter />}
     </div>
   );
 }

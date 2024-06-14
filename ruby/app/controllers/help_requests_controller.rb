@@ -89,6 +89,6 @@ class HelpRequestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def help_request_params
-    params.require(:help_request).permit(:title, :description, :address, :request_type, :status)
+    params.require(:help_request).permit(:title, :description, :address, :request_type, :status, :recycled)
   end
 end

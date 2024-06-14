@@ -1,36 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { Container, Typography, TextField, Button, Box, Select, MenuItem, FormControl, InputLabel, Snackbar, Alert } from '@mui/material';
 
-const HelpRequestForm = () => {
+const HelpRequestEditForm = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [address, setAddress] = useState('');
-  const [requestType, setRequestType] = useState('material-assistance');
+  const [requestType, setRequestType] = useState('');
   const [error, setError] = useState('');
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false); 
-  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false); 
-  const navigate = useNavigate();
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+
+  useEffect(() => {
+    const fetchHelpRequest = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/help_requests/${id}`);
+        const { title, description, address, request_type } = response.data;
+        setTitle(title);
+        setDescription(description);
+        setAddress(address);
+        setRequestType(request_type);
+      } catch (error) {
+        console.error('Error fetching help request:', error);
+      }
+    };
+
+    fetchHelpRequest();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/help_requests', {
-        help_request: { title, description, address, request_type: requestType, status: 'unfulfilled', recycled: false }
+      await axios.put(`http://localhost:3000/help_requests/${id}`, {
+        help_request: { title, description, address, request_type: requestType }
       });
-      console.log('Help request created:', response.data);
-      // Clear form
-      setTitle('');
-      setDescription('');
-      setAddress('');
-      setRequestType('material-assistance');
-      // Show success Snackbar
       setOpenSuccessSnackbar(true);
+      setTimeout(() => navigate('/my-help-requests'), 3000); // Delay navigation to show the Snackbar
     } catch (error) {
-      console.error('Error creating help request:', error);
-      setError('Failed to create help request. Please try again.');
-      // Show error Snackbar
+      console.error('Error updating help request:', error);
+      setError('Failed to update help request. Please try again.');
       setOpenErrorSnackbar(true);
     }
   };
@@ -41,16 +52,13 @@ const HelpRequestForm = () => {
     }
     setOpenSuccessSnackbar(false);
     setOpenErrorSnackbar(false);
-    if (!error) {
-      navigate('/dashboard'); 
-    }
   };
 
   return (
     <Container maxWidth="sm">
       <Box mt={4}>
-        <Typography variant="h4" gutterBottom sx={{ color: '#1976D2' }}>
-          Create a new help request
+        <Typography variant="h4" gutterBottom>
+          Edit Help Request
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -93,28 +101,28 @@ const HelpRequestForm = () => {
             </Select>
           </FormControl>
           <Button type="submit" variant="contained" color="primary" fullWidth>
-            Create Help Request
+            Save Changes
           </Button>
           {error && <Typography color="error">{error}</Typography>}
         </form>
         <Snackbar
           open={openSuccessSnackbar}
-          autoHideDuration={4000}
+          autoHideDuration={3000}
           onClose={handleSnackbarClose}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Position at the top center
         >
           <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-            Help request successfully created!
+            Help request successfully updated!
           </Alert>
         </Snackbar>
         <Snackbar
           open={openErrorSnackbar}
-          autoHideDuration={4000}
+          autoHideDuration={3000}
           onClose={handleSnackbarClose}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Position at the top center
         >
           <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
-            Failed to create help request. Please try again.
+            Failed to update help request. Please try again.
           </Alert>
         </Snackbar>
       </Box>
@@ -122,4 +130,4 @@ const HelpRequestForm = () => {
   );
 };
 
-export default HelpRequestForm;
+export default HelpRequestEditForm;

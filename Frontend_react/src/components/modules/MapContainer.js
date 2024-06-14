@@ -45,9 +45,18 @@ function MapContainer({ currentUserId }) {
     setMessageContent('');
   };
 
+  const diff_hours = (dt2, dt1) => {
+    // Calculate the difference in milliseconds between the two provided Date objects by subtracting the milliseconds value of dt1 from the milliseconds value of dt2
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    // Convert the difference from milliseconds to hours by dividing it by the number of seconds in an hour (3600)
+    diff /= (60 * 60);
+    // Return the absolute value of the rounded difference in hours
+    return Math.abs(diff);
+  }
+
   const handleMessageSend = async () => {
     if (!selectedMarker) return; // No marker selected
-  
+
     try {
       const response = await axios.post('http://localhost:3000/messages', {
         message: {
@@ -60,14 +69,14 @@ function MapContainer({ currentUserId }) {
           status: 'sent'
         }
       });
-  
+
       console.log('Message sent:', response.data);
       handleModalClose();
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
-  
+
   useEffect(() => {
     if (isLoaded) {
       // Try to get the user's current location
@@ -89,18 +98,25 @@ function MapContainer({ currentUserId }) {
   useEffect(() => {
     axios.get('http://localhost:3000/help_requests')
       .then(response => {
-        // Vérifiez que chaque marqueur a des valeurs valides pour latitude et longitude
-        const validMarkers = response.data.filter(marker => {
-          const isValid = typeof marker.latitude === 'number' && typeof marker.longitude === 'number';
-          if (!isValid) {
-            console.error('Invalid marker:', marker);
+        response.data.forEach(marker => {
+          const date1 = new Date(marker.created_at);
+          const date2 = new Date(Date.now());
+
+          if (diff_hours(date1, date2) >= 0 && marker.created_at === marker.updated_at) {
+            console.log("RECYCLE");
+            // axios put request to change the record of that marker to be recycled or over 24 hours
+            axios.put(`http://localhost:3000/help_requests/${marker.id}`, { ...marker, recycled: true }).then(response => { console.log(response) })
           }
-          return isValid;
         });
+
+        // Vérifiez que chaque marqueur a des valeurs valides pour latitude et longitude
+        const validMarkers = response.data.filter(marker => !marker.recycled);
         setMapMarkers(validMarkers);
       })
       .catch(error => console.error('Error fetching help requests:', error));
   }, []);
+  // add time to help request and then add the logic for 24h
+
 
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
@@ -121,29 +137,26 @@ function MapContainer({ currentUserId }) {
           const sw = bounds.getSouthWest();
           axios.get(`http://localhost:3000/help_requests?ne=${ne.lat()},${ne.lng()}&sw=${sw.lat()},${sw.lng()}`)
             .then(response => {
-              const validMarkers = response.data.filter(marker => {
-                const isValid = typeof marker.latitude === 'number' && typeof marker.longitude === 'number';
-                if (!isValid) {
-                  console.error('Invalid marker:', marker);
-                }
-                return isValid;
-              });
+              const validMarkers = response.data.filter(marker => !marker.recycled);
+              console.log(validMarkers);
               setMapMarkers(validMarkers);
             })
             .catch(error => console.error('Error fetching help requests:', error));
         }}
       >
-        {mapMarkers.map(marker => (
-          <Marker
-            key={marker.id}
-            position={{ lat: marker.latitude, lng: marker.longitude }}
-            onClick={() => handleMarkerClick(marker)}
-            icon={{
-              url: marker.request_type === 'material-assistance' ? 'red-marker-icon.png' : 'blue-marker-icon.png',
-              scaledSize: new window.google.maps.Size(30, 30),
-            }}
-          />
-        ))}
+        {
+          mapMarkers.map(marker => (
+            <Marker
+              key={marker.id}
+              position={{ lat: marker.latitude, lng: marker.longitude }}
+              onClick={() => handleMarkerClick(marker)}
+              icon={{
+                url: marker.request_type === 'material-assistance' ? 'red-marker-icon.png' : 'blue-marker-icon.png',
+                scaledSize: new window.google.maps.Size(30, 30),
+              }}
+            />
+          ))
+        }
         {selectedMarker && (
           <InfoWindow
             position={{ lat: selectedMarker.latitude, lng: selectedMarker.longitude }}
@@ -153,12 +166,12 @@ function MapContainer({ currentUserId }) {
               <h3>{selectedMarker.title}</h3>
               <p>{selectedMarker.description}</p>
               <p>Type: {selectedMarker.request_type}</p>
-              {/* Button to trigger the handleVolunteerClick function */}
-              <button onClick={handleVolunteerClick}>Volunteer</button>
+              {/* <p>Created by: {selectedMarker.user_id}</p> Ajouter le nom du créateur */}
+              <Button onClick={handleVolunteerClick} variant="contained">Volunteer</Button>
             </div>
           </InfoWindow>
         )}
-      </GoogleMap>
+      </GoogleMap >
 
       <Modal
         open={isModalOpen}
@@ -182,7 +195,7 @@ function MapContainer({ currentUserId }) {
           <Button variant="contained" onClick={handleModalClose} sx={{ mt: 2, ml: 2 }}>Close</Button>
         </Box>
       </Modal>
-    </div>
+    </div >
   ) : (
     <div>Loading map...</div>
   );

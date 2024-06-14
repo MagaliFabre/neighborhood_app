@@ -11,35 +11,25 @@ import {
   CardContent,
   TextField,
   Button,
-  Avatar,
-  CardHeader,
-  Divider,
-  CardActionArea
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { deepOrange, deepPurple } from '@mui/material/colors';
 
 function ConversationMessages({ currentUserId }) {
   const { id } = useParams();
-  const [messages, setMessages] = useState({ sent_messages: [], received_messages: [] });
+  const [messages, setMessages] = useState([]);
+  const [messageReceiver, setMessageReceiver] = useState(null);
   const [replyContent, setReplyContent] = useState('');
   const [error, setError] = useState(null);
+  const [requestTitle, setRequestTitle] = useState('');
 
   const fetchMessages = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/annonces/${id}/messages/annonce_messages`);
-      const allMessages = [...response.data.sent_messages, ...response.data.received_messages]
-      allMessages.sort((a, b) => {
-        if (a.sent_at < b.sent_at) {
-          return -1;
-      }
-        if (a.sent_at > b.sent_at) {
-          return 1;
-      }
-        return 0;
-      })
-      console.log(allMessages)
-      setMessages(response.data);
+      const allMessages = [...response.data.sent_messages, ...response.data.received_messages];
+      allMessages.sort((a, b) => new Date(a.sent_at) - new Date(b.sent_at));
+      setMessageReceiver(response.data.received_messages[0]?.sender);
+      setRequestTitle(response.data.received_messages[0]?.title);
+      setMessages(allMessages);
     } catch (error) {
       console.error('Error fetching messages:', error);
       setError('Error fetching messages');
@@ -48,14 +38,18 @@ function ConversationMessages({ currentUserId }) {
 
   useEffect(() => {
     fetchMessages();
+
+
+    const intervalId = setInterval(fetchMessages, 3000);
+    return () => clearInterval(intervalId); // Nettoyez l'intervalle lorsque le composant est démonté
   }, [id]);
 
   const handleReply = async () => {
     try {
-      const receiverId = messages.received_messages[0]?.sender.id;
-      const annonceTitle = messages.received_messages[0]?.title;
+      const receiverId = messageReceiver.id;
+      const annonceTitle = requestTitle;
 
-      const response = await axios.post(`http://localhost:3000/messages`, {
+      const response = await axios.post('http://localhost:3000/messages', {
         message: {
           content: replyContent,
           title: annonceTitle,
@@ -63,78 +57,70 @@ function ConversationMessages({ currentUserId }) {
           receiver_id: receiverId,
           help_request_id: id,
           sent_at: new Date(),
-          status: 'sent'
-        }
+          status: 'sent',
+        },
       });
 
-      console.log('Message sent:', response.data);
-      setReplyContent('');
-      fetchMessages();
+      // Logique supplémentaire si nécessaire après l'envoi du message
+
     } catch (error) {
       console.error('Error replying to message:', error);
       setError('Error replying to message');
     }
   };
 
-  const renderMessage = (message, type) => (
-    <ListItem key={message.id} sx={{ marginBottom: 2 }}>
-      <Card variant="outlined" sx={{ width: '100%' }}>
-        <CardHeader
-          avatar={<Avatar sx={{ bgcolor: type === 'sent' ? deepOrange[500] : deepPurple[500] }}>
-            {type === 'sent' ? message.receiver.name.charAt(0) : message.sender.name.charAt(0)}
-          </Avatar>}
-          title={type === 'sent' ? `To: ${message.receiver.name}` : `From: ${message.sender.name}`}
-          subheader={`Status: ${message.status}`}
-        />
-        <Divider />
-        <CardContent>
-          <Typography variant="body1">{message.content}</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            Sent at: {new Date(message.sent_at).toLocaleString()}
-          </Typography>
-        </CardContent>
-      </Card>
-    </ListItem>
-  );
-
   return (
-    <Container>
+    <Container maxWidth="sm">
       <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Messages for Conversation {id}
+        <Typography variant="h5" component="h1" gutterBottom sx={{ color: '#1976D2' }}> 
+          {requestTitle} - Chat with {messageReceiver?.name}
         </Typography>
         <List>
-          {messages.sent_messages.length > 0 || messages.received_messages.length > 0 ? (
-            <>
-              {messages.sent_messages.map((message) => renderMessage(message, 'sent'))}
-              {messages.received_messages.map((message) => renderMessage(message, 'received'))}
-            </>
+          {messages.length > 0 ? (
+            messages.map((message) => (
+              <ListItem key={message.id} sx={{ marginBottom: 2 }}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    width: '100%',
+                    backgroundColor: message.sender_id === currentUserId ? 'lightblue' : 'lightgray',
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="body1">{message.content}</Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                      Sent at: {new Date(message.sent_at).toLocaleString()}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </ListItem>
+            ))
           ) : (
             <Typography>No messages found for this conversation.</Typography>
           )}
         </List>
         <Box mt={4}>
-          <Typography variant="h6" component="div" gutterBottom>
-            Reply to Message
-          </Typography>
           <TextField
-            label="Message"
+            label="Reply"
             variant="outlined"
             fullWidth
             multiline
             rows={4}
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<SendIcon />}
+                  onClick={handleReply}
+                >
+                  Send
+                </Button>
+              ),
+            }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            endIcon={<SendIcon />}
-            onClick={handleReply}
-            sx={{ mt: 2 }}
-          >
-            Reply
-          </Button>
         </Box>
         {error && <Typography variant="body1" color="error">{error}</Typography>}
       </Box>
