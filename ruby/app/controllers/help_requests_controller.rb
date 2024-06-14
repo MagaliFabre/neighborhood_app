@@ -2,6 +2,7 @@ require 'geocoder'
 
 class HelpRequestsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:show, :index]
   before_action :set_help_request, only: [:show, :update, :destroy]
 
   # POST /help_requests
@@ -39,7 +40,7 @@ class HelpRequestsController < ApplicationController
   def create_message_flow
     # Logique pour créer un flux de messages
     @help_request = HelpRequest.find(params[:id])
-    # Assurez-vous que les validations et les permissions sont vérifiées ici
+    # Assurer validations et les permissions sont vérifiées ici
     @message_flow = @help_request.message_flows.create(user: current_user)
 
     if @message_flow.persisted?
@@ -82,12 +83,10 @@ class HelpRequestsController < ApplicationController
     session[:user_id].present?
   end
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_help_request
     @help_request = HelpRequest.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def help_request_params
     params.require(:help_request).permit(:title, :description, :address, :request_type, :status, :recycled)
   end

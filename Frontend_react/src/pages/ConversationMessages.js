@@ -41,7 +41,7 @@ function ConversationMessages({ currentUserId }) {
 
 
     const intervalId = setInterval(fetchMessages, 3000);
-    return () => clearInterval(intervalId); // Nettoyez l'intervalle lorsque le composant est démonté
+    return () => clearInterval(intervalId); // Nettoie l'intervalle lorsque le composant est démonté
   }, [id]);
 
   const handleReply = async () => {

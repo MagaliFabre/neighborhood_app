@@ -16,7 +16,7 @@ const mapContainerStyle = {
 
 const mapWrapperStyle = {
   margin: '0 auto', // Centrer la carte horizontalement
-  maxWidth: '800px', // Limiter la largeur de la carte à 800px
+  maxWidth: '800px', // Limiter la largeur de la carte 
 };
 
 function MapContainer({ currentUserId }) {
@@ -64,7 +64,7 @@ function MapContainer({ currentUserId }) {
           title: selectedMarker.title,
           sender_id: currentUserId,
           receiver_id: selectedMarker.user_id,
-          help_request_id: selectedMarker.id, // Assurez-vous d'envoyer l'ID de la demande d'aide
+          help_request_id: selectedMarker.id, // envoyer l'ID de la demande d'aide
           sent_at: new Date(),
           status: 'sent'
         }
@@ -102,14 +102,14 @@ function MapContainer({ currentUserId }) {
           const date1 = new Date(marker.created_at);
           const date2 = new Date(Date.now());
 
-          if (diff_hours(date1, date2) >= 0 && marker.created_at === marker.updated_at) {
+          if (diff_hours(date1, date2) >= 24 && marker.created_at === marker.updated_at) {
             console.log("RECYCLE");
             // axios put request to change the record of that marker to be recycled or over 24 hours
             axios.put(`http://localhost:3000/help_requests/${marker.id}`, { ...marker, recycled: true }).then(response => { console.log(response) })
           }
         });
 
-        // Vérifiez que chaque marqueur a des valeurs valides pour latitude et longitude
+        // attention chaque marqueur a des valeurs valides pour latitude et longitude
         const validMarkers = response.data.filter(marker => !marker.recycled);
         setMapMarkers(validMarkers);
       })

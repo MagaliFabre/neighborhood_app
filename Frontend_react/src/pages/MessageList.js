@@ -16,7 +16,7 @@ const MessageList = ({ currentUserId }) => {
         const response = await axios.get('http://localhost:3000/messages');
         setMessages(response.data);
 
-        // Vérifiez s'il y a des messages non lus
+        // Vérifie s'il y a des messages non lus
         const hasUnread = response.data.received_messages.some((msg) => !msg.read);
         setUnreadMessages(hasUnread);
       } catch (error) {
