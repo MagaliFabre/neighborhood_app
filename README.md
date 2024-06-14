@@ -1,4 +1,4 @@
-# Aid Platform
+# Neighborhood app
 
 ## Overview
 The Aid Platform project aims to connect people in need with willing volunteers within the community. It facilitates acts of kindness by enabling users to request assistance and volunteer to help others in their local area.
