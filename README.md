@@ -57,13 +57,13 @@ heroku run rails db
 
 ## Screenshots
 ### Home Page
-![Home Page](link_to_your_image)
+![Home Page](./picturereadme/homepage.png)
 
 ### Submission Form
-![Submission Form](link_to_your_image)
+![Submission Form](./picturereadme/form.png)
 
 ### Google Maps Integration
-![Google Maps](link_to_your_image)
+![Google Maps](./picturereadme/map.png)
 
 ## Authors
 Magali Fabre
