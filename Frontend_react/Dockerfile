@@ -17,4 +17,9 @@ FROM nginx:1.19.0-alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=builder /app/build /usr/share/nginx/html
+# Add your nginx.conf
+COPY ./Frontend_react/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
+EXPOSE 80
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
