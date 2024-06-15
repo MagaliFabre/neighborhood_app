@@ -24,7 +24,7 @@ function ConversationMessages({ currentUserId }) {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get(`https://neighborhood-app-back.onrender.com/annonces/${id}/messages/annonce_messages`);
+      const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/annonces/${id}/messages/annonce_messages`);
       const allMessages = [...response.data.sent_messages, ...response.data.received_messages];
       allMessages.sort((a, b) => new Date(a.sent_at) - new Date(b.sent_at));
       setMessageReceiver(response.data.received_messages[0]?.sender);
@@ -49,7 +49,7 @@ function ConversationMessages({ currentUserId }) {
       const receiverId = messageReceiver.id;
       const annonceTitle = requestTitle;
 
-      const response = await axios.post(`https://neighborhood-app-back.onrender.com/messages`, {
+      const response = await axios.post(`${process.env.REACT_APP_HOSTNAME}/messages`, {
         message: {
           content: replyContent,
           title: annonceTitle,

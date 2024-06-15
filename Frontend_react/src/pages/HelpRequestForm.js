@@ -16,7 +16,7 @@ const HelpRequestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`https://neighborhood-app-back.onrender.com/help_requests`, {
+      const response = await axios.post(`${process.env.REACT_APP_HOSTNAME}/help_requests`, {
         help_request: { title, description, address, request_type: requestType, status: 'unfulfilled', recycled: false }
       });
       console.log('Help request created:', response.data);

@@ -13,7 +13,7 @@ export const HomePage = (props) => {
   useEffect(() => {
     const fetchUnfulfilledRequestsCount = async () => {
       try {
-        const response = await axios.get(`https://neighborhood-app-back.onrender.com/help_requests?status=unfulfilled`);
+        const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests?status=unfulfilled`);
         const unfulfilledRequests = response.data.filter(request => request.status === "unfulfilled")
         setUnfulfilledRequestsCount(unfulfilledRequests.length);
       } catch (error) {
