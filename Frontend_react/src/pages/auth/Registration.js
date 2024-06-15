@@ -20,7 +20,7 @@ const Registration = ({ handleSuccessfulAuth }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post(`${process.env.REACT_APP_HOSTNAME}/registrations`, {
+      .post(`/registrations`, {
         user: {
           name: userData.name,
           email: userData.email,
