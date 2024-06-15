@@ -11,19 +11,19 @@ services:
     ports:
       - port: 80
 
-  - type: db
-    name: postgres
-    plan: standard  # Choose the appropriate plan
-    properties:
-      engine: postgres
-      version: 13  # Adjust the version if needed
-      databases:
-        - neighborhood_app_production
-      user: neighborhood_app
-      password: ''  # Use Render secrets for passwords and other sensitive information
-    disk:
-      name: data
-      sizeGB: 10  # Adjust the size as necessary
+  # - type: db
+  #   name: postgres
+  #   plan: standard  # Choose the appropriate plan
+  #   properties:
+  #     engine: postgres
+  #     version: 13  # Adjust the version if needed
+  #     databases:
+  #       - neighborhood_app_production
+  #     user: neighborhood_app
+  #     password: ''  # Use Render secrets for passwords and other sensitive information
+  #   disk:
+  #     name: data
+  #     sizeGB: 10  # Adjust the size as necessary
 
   - type: web
     name: backend
