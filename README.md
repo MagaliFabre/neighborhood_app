@@ -1,4 +1,4 @@
-# Neighborhood app
+# Neighborhood App
 
 ## Overview
 The Aid Platform project aims to connect people in need with willing volunteers within the community. It facilitates acts of kindness by enabling users to request assistance and volunteer to help others in their local area.
@@ -21,13 +21,13 @@ To get a local copy up and running, follow these simple steps:
 4. Navigate to the `Frontend_react` directory for the React frontend, and follow the setup instructions in the README.md file.
 
 ## Features
-- Users can sign up and create accounts with their first name, last name, email address, and upload a copy of a government-approved ID (accepted formats: .jpg, .png, .pdf).
+- Users can sign up and create accounts with their name, email address and password.
 - Real-time tracking of assistance requests and volunteer locations using Google Maps API.
 - Differentiates between one-time tasks and material needs with colored markers on the map.
 - Allows users to click on markers to view request details and volunteer to fulfill the need.
 - Message flow for communication between volunteers and requesters to coordinate assistance.
-- Automatic removal of requests from the map after 5 volunteers have committed or after 24 hours if not fulfilled.
-- Counter displaying the number of unfulfilled help requests on the homepage, updating without page reloads.
+- Automatic removal of requests from the map after at least volunteers have committed or after 24 hours if not fulfilled.
+- Counter displaying the number of unfulfilled help requests on the homepage.
 
 ## Usage
 1. Start the Rails server by running `rails server` in the `ruby` directory.
@@ -35,22 +35,21 @@ To get a local copy up and running, follow these simple steps:
 3. Open [http://localhost:3000/](http://localhost:3000/) in your browser to view the Aid Platform application.
 
 ## Deployment
-The Aid Platform can be deployed online. Follow these steps to deploy:
+The Aid Platform can be deployed online. Follow these steps to deploy using Docker on a personal server:
 
-### Heroku Deployment
-1. Create a Heroku account at [https://www.heroku.com/](https://www.heroku.com/) if you haven't already.
-2. Install the Heroku CLI following the instructions [here](https://devcenter.heroku.com/articles/heroku-cli).
-3. In your terminal, navigate to the project directory `Aid_Platform`.
-4. Log in to Heroku CLI by running `heroku login` and follow the prompts to authenticate.
-5. Create a new Heroku app with `heroku create`.
-6. Deploy your application to Heroku by pushing your code to the Heroku remote repository:
-
-git push heroku main
-
-Copy code
-7. Run database migrations on Heroku:
-heroku run rails db
-8. Open your deployed application in the browser with `heroku open`.
+### Docker Deployment
+1. Ensure Docker is installed on your server. Follow the instructions [here](https://docs.docker.com/get-docker/).
+2. Clone this repository with `git clone https://github.com/MagaliFabre/neighborhood_app.git`.
+3. Navigate to the project directory by entering `cd neighborhood_app` in the terminal.
+4. Build the Docker images for both the backend and frontend:
+    ```sh
+    docker-compose build
+    ```
+5. Start the containers:
+    ```sh
+    docker-compose up
+    ```
+6. Your application should now be running on your personal server. Open your server's IP address in your browser to view the application. For example, [http://server.gr1moire.net/](http://server.gr1moire.net/).
 
 ## Database Schema
 ![Database Schema](./picturereadme/db.png)
@@ -85,8 +84,7 @@ Technology is best used to help people, whether globally or right outside your d
 
 #### Accounts
 
-- Users can sign up with their first name, last name, email address, and upload a government-approved ID.
-- Upload accepts .jpg, .png, and .pdf formats.
+- Users can sign up with their name, email address and password.
 
 #### Volunteering to Help
 
@@ -95,7 +93,7 @@ Technology is best used to help people, whether globally or right outside your d
 - The map refreshes results based on the user's location and allows movement.
 - Clicking a marker shows request details and a button to volunteer.
 - Users can send messages directly to requesters to organize fulfillment.
-- Requests disappear from the map after 5 volunteers or if marked as fulfilled.
+- Requests disappear from the map after at least 1 volunteers or if marked as fulfilled.
 
 #### Submitting a Request
 
