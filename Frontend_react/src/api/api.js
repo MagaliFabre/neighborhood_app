@@ -1,7 +1,7 @@
 import axios from 'axios';
 import API_KEY from './config';
 
-const API_BASE_URL = `https://neighborhood-app-back.onrender.com/api/v1`;
+const API_BASE_URL = `${process.env.REACT_APP_HOSTNAME}/api/v1`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 export const fetchData = () => {
-  return fetch(`https://neighborhood-app-back.onrender.com/registrations`, {
+  return fetch(`${process.env.REACT_APP_HOSTNAME}/registrations`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -20,7 +20,7 @@ export const fetchData = () => {
 
 export const signIn = async (userData) => {
   try {
-    const response = await api.post('/users/sign_in', userData);
+    const response = await api.post(`${process.env.REACT_APP_HOSTNAME}/sign_in`, userData);
     return response.data;
   } catch (error) {
     throw error;

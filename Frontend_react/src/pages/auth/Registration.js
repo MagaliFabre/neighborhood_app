@@ -20,7 +20,7 @@ const Registration = ({ handleSuccessfulAuth }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post(`https://neighborhood-app-back.onrender.com/registrations`, {
+      .post(`${process.env.REACT_APP_HOSTNAME}/registrations`, {
         user: {
           name: userData.name,
           email: userData.email,

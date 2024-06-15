@@ -17,7 +17,7 @@ const HelpRequestEditForm = () => {
   useEffect(() => {
     const fetchHelpRequest = async () => {
       try {
-        const response = await axios.get(`https://neighborhood-app-back.onrender.com/help_requests/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests/${id}`);
         const { title, description, address, request_type } = response.data;
         setTitle(title);
         setDescription(description);
@@ -34,7 +34,7 @@ const HelpRequestEditForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://neighborhood-app-back.onrender.com/help_requests/${id}`, {
+      await axios.put(`${process.env.REACT_APP_HOSTNAME}/help_requests/${id}`, {
         help_request: { title, description, address, request_type: requestType }
       });
       setOpenSuccessSnackbar(true);
