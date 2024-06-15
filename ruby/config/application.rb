@@ -16,13 +16,13 @@ module NeighborhoodApp
     config.autoload_lib(ignore: %w(assets tasks))
 
     config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins 'http://localhost:3001'  # Ajoutez l'origine de votre frontend
+      # allow do
+      #   origins 'http://localhost:3001'  # Ajoutez l'origine de votre frontend
 
-        resource '*',
-          headers: :any,
-          methods: [:get, :post, :put, :patch, :delete, :options, :head],
-          credentials: true  # Permet l'envoi de cookies et autres credentials
+      #   resource '*',
+      #     headers: :any,
+      #     methods: [:get, :post, :put, :patch, :delete, :options, :head],
+      #     credentials: true  # Permet l'envoi de cookies et autres credentials
 
       allow do
         origins 'https://neighborhood-app-front.onrender.com'  # Ajoutez l'origine de votre fronten
