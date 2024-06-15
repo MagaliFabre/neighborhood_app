@@ -51,7 +51,7 @@ function Navbar() {
 
   const handleLogoutClick = () => {
     axios
-      .delete(`http://${process.env.REACT_APP_HOSTNAME}/logout`, { withCredentials: true })
+      .delete(`https://neighborhood-app-back.onrender.com/logout`, { withCredentials: true })
       .then((response) => {
         console.log(response.status);
         navigate('/');

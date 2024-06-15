@@ -23,7 +23,6 @@ function App() {
   const [password, setPassword] = useState('');
   const [unreadMessages, setUnreadMessages] = useState(false);
 
-  console.log(process.env.REACT_APP_HOSTNAME);
 
   const currentUserId = user.id;
   const navigate = useNavigate();
@@ -41,7 +40,7 @@ function App() {
 
   useEffect(() => {
     if (username && password) {
-      fetch(`${process.env.REACT_APP_HOSTNAME}/login`, {
+      fetch(`https://neighborhood-app-back.onrender.com/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +67,7 @@ function App() {
 
   const checkLoginStatus = useCallback(() => {
     axios
-      .get(`${process.env.REACT_APP_HOSTNAME}/logged_in`)
+      .get(`https://neighborhood-app-back.onrender.com/logged_in`)
       .then((response) => {
         if (response.data.logged_in && loggedInStatus === "NOT_LOGGED_IN") {
           setLoggedInStatus("LOGGED_IN");

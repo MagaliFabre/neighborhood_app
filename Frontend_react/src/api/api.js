@@ -1,7 +1,7 @@
 import axios from 'axios';
 import API_KEY from './config';
 
-const API_BASE_URL = `${process.env.REACT_APP_HOSTNAME}/api/v1`;
+const API_BASE_URL = `https://neighborhood-app-back.onrender.com/api/v1`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 export const fetchData = () => {
-  return fetch(`${process.env.REACT_APP_HOSTNAME}/registrations`, {
+  return fetch(`https://neighborhood-app-back.onrender.com/registrations`, {
     method: 'GET',
     credentials: 'include'
   })
