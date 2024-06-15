@@ -23,6 +23,8 @@ function App() {
   const [password, setPassword] = useState('');
   const [unreadMessages, setUnreadMessages] = useState(false);
 
+  console.log(process.env.REACT_APP_HOSTNAME);
+
   const currentUserId = user.id;
   const navigate = useNavigate();
   const location = useLocation();

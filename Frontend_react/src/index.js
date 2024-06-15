@@ -5,7 +5,7 @@ import './index.css';
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import actionCable from 'actioncable';
-
+require('dotenv').config()
 const CableApp = {};
 CableApp.cable = actionCable.createConsumer('ws://localhost:3000/cable');
 
