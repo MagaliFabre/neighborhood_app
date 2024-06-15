@@ -19,7 +19,7 @@ export const Login = ({ handleSuccessfulAuth }) => {
     console.log("SUBMIT");
     event.preventDefault();
     axios
-      .post('http://localhost:3000/sessions', {
+      .post(`${process.env.REACT_APP_HOSTNAME}/sessions`, {
         user: {
           email: userData.email,
           password: userData.password,

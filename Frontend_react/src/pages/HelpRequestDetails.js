@@ -14,7 +14,7 @@ const HelpRequestDetails = () => {
   useEffect(() => {
     const fetchHelpRequest = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/help_requests/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests/${id}`);
         setHelpRequest(response.data);
       } catch (error) {
         setError(error.message);
@@ -27,7 +27,7 @@ const HelpRequestDetails = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3000/help_requests/${id}`);
+      await axios.delete(`${process.env.REACT_APP_HOSTNAME}/help_requests/${id}`);
       setOpenSuccessSnackbar(true);
       setTimeout(() => {
         setOpenSuccessSnackbar(false);

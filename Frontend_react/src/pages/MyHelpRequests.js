@@ -10,7 +10,7 @@ const MyHelpRequests = ({ currentUserId }) => {
   useEffect(() => {
     const fetchHelpRequests = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/help_requests`);
+        const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests`);
         setHelpRequests(response.data.filter(request => request.user_id === currentUserId));
       } catch (error) {
         setError(error.message);
@@ -32,7 +32,7 @@ const MyHelpRequests = ({ currentUserId }) => {
 
   const handleClick = (id) => {
     console.log(id);
-    axios.put(`http://localhost:3000/help_requests/${id}`, { recycled: false })
+    axios.put(`${process.env.REACT_APP_HOSTNAME}/help_requests/${id}`, { recycled: false })
       .then(response => {
         setHelpRequests(oldArray => {
           return oldArray.map(element => {

@@ -13,7 +13,7 @@ const MessageList = ({ currentUserId }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/messages');
+        const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/messages`);
         setMessages(response.data);
 
         // Vérifie s'il y a des messages non lus

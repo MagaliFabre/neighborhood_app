@@ -41,7 +41,7 @@ function App() {
 
   useEffect(() => {
     if (username && password) {
-      fetch('http://localhost:3000/login', {
+      fetch(`${process.env.REACT_APP_HOSTNAME}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ function App() {
 
   const checkLoginStatus = useCallback(() => {
     axios
-      .get("http://localhost:3000/logged_in")
+      .get(`${process.env.REACT_APP_HOSTNAME}/logged_in`)
       .then((response) => {
         if (response.data.logged_in && loggedInStatus === "NOT_LOGGED_IN") {
           setLoggedInStatus("LOGGED_IN");

@@ -51,7 +51,7 @@ function Navbar() {
 
   const handleLogoutClick = () => {
     axios
-      .delete("http://localhost:3000/logout", { withCredentials: true })
+      .delete(`http://${process.env.REACT_APP_HOSTNAME}/logout`, { withCredentials: true })
       .then((response) => {
         console.log(response.status);
         navigate('/');

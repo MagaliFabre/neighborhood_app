@@ -20,7 +20,7 @@ const Dashboard = ({ user }) => {
     // Function to fetch unfulfilled requests
     const fetchUnfulfilledRequestsCount = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/help_requests');
+        const response = await axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests`);
         const unfulfilledRequests = response.data.filter(request => request.status === "unfulfilled" && !request.recycled)
         setUnfulfilledRequestsCount(unfulfilledRequests.length);
       } catch (error) {

@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import actionCable from 'actioncable';
 require('dotenv').config()
 const CableApp = {};
-CableApp.cable = actionCable.createConsumer('ws://localhost:3000/cable');
+CableApp.cable = actionCable.createConsumer('ws://neighborhood-app-back.onrender.com/cable');
 
 const root = ReactDOM.createRoot(document.getElementById('root')); // Utiliser createRoot directement
 root.render(

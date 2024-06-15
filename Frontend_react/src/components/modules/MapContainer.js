@@ -55,10 +55,10 @@ function MapContainer({ currentUserId }) {
   }
 
   const handleMessageSend = async () => {
-    if (!selectedMarker) return; // No marker selected
+    if (!selectedMarker) return; // No marker selected 
 
     try {
-      const response = await axios.post('http://localhost:3000/messages', {
+      const response = await axios.post(`${process.env.REACT_APP_HOSTNAME}/messages`, {
         message: {
           content: messageContent,
           title: selectedMarker.title,
@@ -96,7 +96,7 @@ function MapContainer({ currentUserId }) {
   }, [isLoaded]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/help_requests')
+    axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests`)
       .then(response => {
         response.data.forEach(marker => {
           const date1 = new Date(marker.created_at);
@@ -105,7 +105,7 @@ function MapContainer({ currentUserId }) {
           if (diff_hours(date1, date2) >= 24 && marker.created_at === marker.updated_at) {
             console.log("RECYCLE");
             // axios put request to change the record of that marker to be recycled or over 24 hours
-            axios.put(`http://localhost:3000/help_requests/${marker.id}`, { ...marker, recycled: true }).then(response => { console.log(response) })
+            axios.put(`${process.env.REACT_APP_HOSTNAME}/help_requests/${marker.id}`, { ...marker, recycled: true }).then(response => { console.log(response) })
           }
         });
 
@@ -135,7 +135,7 @@ function MapContainer({ currentUserId }) {
           const bounds = mapRef.current.getBounds();
           const ne = bounds.getNorthEast();
           const sw = bounds.getSouthWest();
-          axios.get(`http://localhost:3000/help_requests?ne=${ne.lat()},${ne.lng()}&sw=${sw.lat()},${sw.lng()}`)
+          axios.get(`${process.env.REACT_APP_HOSTNAME}/help_requests?ne=${ne.lat()},${ne.lng()}&sw=${sw.lat()},${sw.lng()}`)
             .then(response => {
               const validMarkers = response.data.filter(marker => !marker.recycled);
               console.log(validMarkers);
