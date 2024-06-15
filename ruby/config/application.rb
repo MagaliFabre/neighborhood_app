@@ -23,6 +23,13 @@ module NeighborhoodApp
           headers: :any,
           methods: [:get, :post, :put, :patch, :delete, :options, :head],
           credentials: true  # Permet l'envoi de cookies et autres credentials
+
+      allow do
+        origins 'https://neighborhood-app-front.onrender.com'  # Ajoutez l'origine de votre fronten
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          credentials: true  # Permet l'envoi de cookies et autres credentials
       end
     end
 
